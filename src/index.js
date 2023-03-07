@@ -1,3 +1,5 @@
 import './style.css';
 
-console.log('Hello');
+export function sum(x, y) {
+    return x + y;
+}
