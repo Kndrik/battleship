@@ -81,6 +81,38 @@ test('Gameboard: placeShip() -> long vertical', () => {
     expect(board.getCell(3,1).state).toBe('default');
 });
 
+test('Gameboard: placeShip() -> overflow hor', () => {
+    const board = new Gameboard();
+    expect(() => { board.placeShip(new Ship(5), 8, 4) }).toThrow('Ship is overflowing');
+});
+
+test('Gameboard: placeShip() -> overflow vert', () => {
+    const board = new Gameboard();
+    expect(() => { board.placeShip(new Ship(3), 6, 2, true) }).toThrow('Ship is overflowing');
+});
+
+test('Gameboard: placeShip() -> limit before overflow', () => {
+    const board = new Gameboard();
+    board.placeShip(new Ship(3), 7, 4);
+    expect(board.getCell(9,4).state).toBe('ship');
+});
+
+test('Gameboard: placeShip() -> overlapping hor', () => {
+    const board = new Gameboard();
+    board.placeShip(new Ship(3), 4, 4);
+    expect(() => {
+        board.placeShip(new Ship(3), 3, 4);
+    }).toThrow('Ships are overlapping');
+});
+
+test('Gameboard: placeShip() -> overlapping vert', () => {
+    const board = new Gameboard();
+    board.placeShip(new Ship(3), 4, 4);
+    expect(() => {
+        board.placeShip(new Ship(3), 5, 5, true);
+    }).toThrow('Ships are overlapping');
+});
+
 test('Gameboard: receiveAttack() -> empty cell', () => {
     const board = new Gameboard();
     board.receiveAttack(3,4);
@@ -120,4 +152,37 @@ test('Gameboard: receiveAttack() -> hit ship', () => {
     board.placeShip(ship, 3, 4, false);
     board.receiveAttack(4, 4);
     expect(ship.hitCount).toBe(1);
+})
+
+test('Gameboard: areAllShipsSunk() -> no hit', () => {
+    const board = new Gameboard();
+    board.placeShip(new Ship(3), 3, 4);
+    board.receiveAttack(1,1);
+    expect(board.areAllShipsSunk()).toBeFalsy();
+});
+
+test('Gameboard: areAllShipsSunk() -> some hit', () => {
+    const board = new Gameboard();
+    board.placeShip(new Ship(3), 3, 4);
+    board.receiveAttack(3, 4);
+    expect(board.areAllShipsSunk()).toBeFalsy();
+});
+
+test('Gameboard: areAllShipsSunk() -> all hit', () => {
+    const board = new Gameboard();
+    board.placeShip(new Ship(3), 3, 4);
+    board.receiveAttack(3,4);
+    board.receiveAttack(4,4);
+    board.receiveAttack(5,4);
+    expect(board.areAllShipsSunk()).toBeTruthy();
+});
+
+test('Gameboard: areAllShipsSunk() -> multiple boats one sunk', () => {
+    const board = new Gameboard();
+    board.placeShip(new Ship(3), 3, 4);
+    board.placeShip(new Ship(2), 6, 6);
+    board.receiveAttack(3,4);
+    board.receiveAttack(4,4);
+    board.receiveAttack(5,4);
+    expect(board.areAllShipsSunk()).toBeFalsy();
 })

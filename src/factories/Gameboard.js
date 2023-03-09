@@ -1,4 +1,5 @@
 class Gameboard {
+    #ships = new Array();
     constructor() {
         this.#createGrid();
     }
@@ -14,34 +15,53 @@ class Gameboard {
     }
 
     placeShip(ship, x, y, rotated = false) {
-        // TODO: PREVENT OVERFLOW
         if (!rotated) {
-            this.fillHorizontalShip(ship, x, y)
+            if (x + ship.length-1 > 9) throw new Error('Ship is overflowing');
+            this.#ships.push(ship);
+            return this.fillHorizontalShip(ship, x, y);
         } else {
-            this.fillVerticalShip(ship, x, y);
+            if (y - ship.length-1 < 0) throw new Error('Ship is overflowing');
+            this.#ships.push(ship);
+            return this.fillVerticalShip(ship, x, y);
         }
     }
 
     fillHorizontalShip(ship, x, y) {
+        let cells = new Array();
         const initX = x;
         const length = ship.length;
         while(x < initX + length) {
             const cell = this.getCell(x, y);
-            cell.ship = ship;
-            cell.changeState('ship');
+            if (cell.state === 'ship') {
+                throw new Error('Ships are overlapping');
+            }
+            cells.push(cell);
             x++;
         }
+
+        cells.forEach(cell => {
+            cell.ship = ship;
+            cell.changeState('ship');
+        });
     }
 
     fillVerticalShip(ship, x, y) {
+        let cells = new Array();
         const initY = y;
         const length = ship.length;
         while(y > initY - length) {
             const cell = this.getCell(x, y);
-            cell.changeState('ship');
-            cell.ship = ship;
+            if (cell.state === 'ship') {
+                throw new Error('Ships are overlapping');
+            }
+            cells.push(cell);
             y--;
         }
+
+        cells.forEach(cell => {
+            cell.ship = ship;
+            cell.changeState('ship');
+        });
     }
 
     receiveAttack(x, y) {
@@ -67,7 +87,12 @@ class Gameboard {
     }
 
     areAllShipsSunk() {
-        
+        for(let i = 0; i < this.#ships.length; i++) {
+            if (!this.#ships[i].isSunk()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     getCell(x, y) {
