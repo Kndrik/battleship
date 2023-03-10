@@ -1,7 +1,8 @@
-import { sum } from "./index";
 import Ship from "./factories/Ship";
 import Gameboard from "./factories/Gameboard";
 import { Cell } from "./factories/Gameboard";
+import { Player, IA } from "./factories/Player";
+import { domHandler } from "./DomHandler";
 
 
 // Ship tests
@@ -185,4 +186,22 @@ test('Gameboard: areAllShipsSunk() -> multiple boats one sunk', () => {
     board.receiveAttack(4,4);
     board.receiveAttack(5,4);
     expect(board.areAllShipsSunk()).toBeFalsy();
-})
+});
+
+// Player tests
+test('Player: attackBoard() -> miss', () => {
+    const board = new Gameboard();
+    const player = new Player(board);
+    player.attackBoard(3,3);
+    expect(board.getCell(3,3).state).toBe('miss');
+    expect(board.getCell(3,4).state).toBe('default');
+});
+
+test('Player: attackBoard() -> hit', () => {
+    const board = new Gameboard();
+    const player = new Player(board);
+    board.placeShip(new Ship(3), 3, 3);
+    player.attackBoard(3, 3);
+    expect(board.getCell(3,3).state).toBe('hit');
+    expect(board.getCell(4,3).state).toBe('ship');
+});

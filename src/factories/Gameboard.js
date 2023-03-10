@@ -77,13 +77,12 @@ class Gameboard {
             break;
 
             case 'hit':
-                cell.changeState('hit');
-            break;
+                return false;
 
             case 'miss':
-                cell.changeState('miss');
-            break;
+                return false;
         }
+        return true;
     }
 
     areAllShipsSunk() {
