@@ -19,12 +19,20 @@ class Gameboard {
     placeShip(ship, x, y, rotated = false) {
         if (!rotated) {
             if (x + ship.length-1 > 9) throw new Error('Ship is overflowing');
+            try {
+                this.fillHorizontalShip(ship, x, y);
+            } catch (err) {
+                throw new Error();
+            }
             this.#ships.push(ship);
-            return this.fillHorizontalShip(ship, x, y);
         } else {
             if (y - ship.length-1 < 0) throw new Error('Ship is overflowing');
+            try {
+                this.fillVerticalShip(ship, x, y);
+            } catch (err) {
+                throw new Error();
+            }
             this.#ships.push(ship);
-            return this.fillVerticalShip(ship, x, y);
         }
     }
 
@@ -41,7 +49,6 @@ class Gameboard {
                     placed = true;
                 } catch (err) {
                     // Do nothing - just try again with a new random position
-                    console.log(err);
                 }
             }
         }
@@ -119,6 +126,7 @@ class Gameboard {
     }
 
     areAllShipsSunk() {
+        console.log(this.#ships.length);
         for(let i = 0; i < this.#ships.length; i++) {
             if (!this.#ships[i].isSunk()) {
                 return false;

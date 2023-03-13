@@ -54,5 +54,11 @@ export const domHandler = (() => {
         cell.className = `cell ${state}`;
     }
 
-    return { buildOponentGrid, buildPlayerGrid, updateCell };
+    const showWinner = (winner) => {
+        const elem = document.querySelector('.winner');
+        elem.hidden = false;
+        elem.textContent = `${winner} has won!`;
+    }
+
+    return { buildOponentGrid, buildPlayerGrid, updateCell, showWinner };
 })();

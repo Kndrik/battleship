@@ -23,8 +23,16 @@ export const gameSystem = (() => {
         const attacked = player.attackBoard(x, y);
         if (!attacked) return;
         domHandler.updateCell(x, y, oponentBoard.getCell(x, y).getState(), false);
+        if (oponentBoard.areAllShipsSunk()) {
+            domHandler.showWinner('Player');
+            console.log('winner');
+        }
+
         const coord = ia.attackRandomCoordinates();
         domHandler.updateCell(coord[0], coord[1], playerBoard.getCell(coord[0], coord[1]).getState(), true);
+        if (playerBoard.areAllShipsSunk()) {
+            domHandler.showWinner('Computer');
+        }
     }
     
     return { initialize, playerAttack }

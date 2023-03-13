@@ -1,5 +1,5 @@
 html {
-    color: red;
+    color: black;
 }
 
 body {
@@ -53,4 +53,18 @@ body {
 
 .cell.miss {
     background-color: gray;
+}
+
+.header {
+    display: flex;
+    height: 70px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.winner {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 24px;
 }
