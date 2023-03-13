@@ -43,6 +43,10 @@ body {
     cursor: pointer;
 }
 
+.cell.ship {
+    background-color: lightblue;
+}
+
 .cell.hit {
     background-color: rgb(201, 45, 45);
 }

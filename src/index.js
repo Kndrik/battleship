@@ -15,7 +15,7 @@ export const gameSystem = (() => {
     const initialize = () => {
         playerBoard.autoPlaceShips();
         oponentBoard.autoPlaceShips();
-        domHandler.buildPlayerGrid();
+        domHandler.buildPlayerGrid(playerBoard);
         domHandler.buildOponentGrid();
     }
 

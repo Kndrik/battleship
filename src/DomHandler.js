@@ -22,7 +22,7 @@ export const domHandler = (() => {
         gridsParent.appendChild(newGrid);
     }
     
-    const buildPlayerGrid = () => {
+    const buildPlayerGrid = (board) => {
         const gridsParent = document.querySelector('.grids-container');
         const newGrid = document.createElement('div');
         newGrid.className = 'grid-container player';
@@ -35,6 +35,7 @@ export const domHandler = (() => {
                 newCell.classList.add('player');
                 newCell.setAttribute('xpos', j);
                 newCell.setAttribute('ypos', i);
+                newCell.classList.add(board.getCell(j, i).getState());
                 newRow.appendChild(newCell);
             }
             newGrid.prepend(newRow);
