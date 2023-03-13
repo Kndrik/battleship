@@ -8,28 +8,21 @@ body {
 }
 
 .grids-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr;
+    display: flex;
+    justify-content: space-around;
 }
 
 .grid-container {
-    grid-row: 1/2;
-    width: 90%;
+    width: 100%;
+    max-width: 500px;
     height: auto;
+    max-height: 500px;
     aspect-ratio: 1 / 1;
-    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: 1px;
-}
-
-.grid-container.oponent {
-    grid-column: 2/3;
-}
-
-.grid-container.player {
-    grid-column: 1/2;
+    padding: 2px;
+    background-color: black;
 }
 
 .row {
@@ -42,6 +35,7 @@ body {
 .cell {
     border: 1px solid black;
     flex: 1;
+    background-color: white;
 }
 
 .cell.oponent:hover {

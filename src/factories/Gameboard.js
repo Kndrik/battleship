@@ -1,3 +1,5 @@
+import Ship from "./Ship";
+
 class Gameboard {
     #ships = new Array();
     constructor() {
@@ -26,6 +28,25 @@ class Gameboard {
         }
     }
 
+    autoPlaceShips() {
+        const shipSizes = [5, 4, 3, 3, 2];
+        for (const size of shipSizes) {
+            let placed = false;
+            while (!placed) {
+                const x = Math.floor(Math.random() * 10);
+                const y = Math.floor(Math.random() * 10);
+                const rotate = Math.random() < 0.5;
+                try {
+                    this.placeShip(new Ship(size), x, y, rotate);
+                    placed = true;
+                } catch (err) {
+                    // Do nothing - just try again with a new random position
+                    console.log(err);
+                }
+            }
+        }
+    }
+
     fillHorizontalShip(ship, x, y) {
         let cells = new Array();
         const initX = x;
@@ -34,6 +55,12 @@ class Gameboard {
             const cell = this.getCell(x, y);
             if (cell.state === 'ship') {
                 throw new Error('Ships are overlapping');
+            }
+            if ((x > 0 && this.getCell(x-1, y).state === 'ship') ||
+                (x < 9 && this.getCell(x+1, y).state === 'ship') ||
+                (y < 9 && this.getCell(x, y+1).state === 'ship') ||
+                (y > 0 && this.getCell(x, y-1).state === 'ship')) {
+                throw new Error('Ships are too close');
             }
             cells.push(cell);
             x++;
@@ -53,6 +80,12 @@ class Gameboard {
             const cell = this.getCell(x, y);
             if (cell.state === 'ship') {
                 throw new Error('Ships are overlapping');
+            }
+            if ((x > 0 && this.getCell(x-1, y).state === 'ship') ||
+                (x < 9 && this.getCell(x+1, y).state === 'ship') ||
+                (y < 9 && this.getCell(x, y+1).state === 'ship') ||
+                (y > 0 && this.getCell(x, y-1).state === 'ship')) {
+                throw new Error('Ships are too close');
             }
             cells.push(cell);
             y--;

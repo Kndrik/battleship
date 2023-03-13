@@ -13,8 +13,10 @@ export const gameSystem = (() => {
     const ia = new IA(playerBoard);
 
     const initialize = () => {
-        domHandler.buildOponentGrid();
+        playerBoard.autoPlaceShips();
+        oponentBoard.autoPlaceShips();
         domHandler.buildPlayerGrid();
+        domHandler.buildOponentGrid();
     }
 
     const playerAttack = (x, y) => {

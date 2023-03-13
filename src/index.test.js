@@ -205,3 +205,9 @@ test('Player: attackBoard() -> hit', () => {
     expect(board.getCell(3,3).state).toBe('hit');
     expect(board.getCell(4,3).state).toBe('ship');
 });
+
+
+// DomHandler
+test('domHandler: buildOponentGrid()', () => {
+    expect(domHandler.buildOponentGrid()).toBe(true);
+});
